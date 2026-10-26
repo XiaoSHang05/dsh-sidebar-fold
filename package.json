@@ -1,0 +1,50 @@
+{
+  "name": "dsh-sidebar-fold",
+  "version": "1.0.0",
+  "description": "Folds the DSH sidebar's global panel icons into one collapsible header row, and hides the dock's sidebar entry.",
+  "type": "module",
+  "license": "MIT",
+  "author": "XiaoSHang05",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "cordis-plugin",
+    "sidebar",
+    "ui"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XiaoSHang05/dsh-sidebar-fold.git"
+  },
+  "homepage": "https://github.com/XiaoSHang05/dsh-sidebar-fold#readme",
+  "bugs": {
+    "url": "https://github.com/XiaoSHang05/dsh-sidebar-fold/issues"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  }
+}

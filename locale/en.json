@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Sidebar tidy-up",
+    "description": "Folds the sidebar's global panel icons into one collapsible header row, and hides the dock's sidebar entry."
+  }
+}

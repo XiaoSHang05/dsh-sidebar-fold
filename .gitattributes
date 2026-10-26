@@ -1,0 +1,14 @@
+# Keep every text file LF in the working tree and in the repository.
+#
+# This plugin ships a hand-written browser bundle (`client.js`) that DSH reads
+# byte for byte. Git's autocrlf would rewrite its line endings on checkout and
+# the file would no longer be the one that was tested.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.ico binary
+*.tgz binary
