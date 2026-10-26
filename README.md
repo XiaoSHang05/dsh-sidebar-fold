@@ -1,5 +1,8 @@
 # dsh-sidebar-fold · 侧栏整理
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![Release](https://img.shields.io/github/v/release/XiaoSHang05/dsh-sidebar-fold)](https://github.com/XiaoSHang05/dsh-sidebar-fold/releases)
+
 > 侧栏顶部那排图标，收成一行。
 
 DeepSeek Harness 的侧栏顶部会随着插件越装越多而越拉越长 —— 插件、插件市场、自动化任务、上下文洞察、技能中心、记忆系统、更多…… 每一个都是一个独立插件往 `sidebar.panellist` 槽位里注册的图标。装到第七个，它们就占了小半屏。
