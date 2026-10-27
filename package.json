@@ -1,7 +1,7 @@
 {
   "name": "dsh-sidebar-fold",
-  "version": "1.0.0",
-  "description": "Folds the DSH sidebar's global panel icons into one collapsible header row, and hides the dock's sidebar entry.",
+  "version": "1.0.1",
+  "description": "Folds the DSH sidebar's global panel icons into one collapsible header row.",
   "type": "module",
   "license": "MIT",
   "author": "XiaoSHang05",

@@ -1,14 +1,10 @@
 # dsh-sidebar-fold bundle patch.
 #
 # Inserts one plugin row. The host half (exports ".") does nothing; the whole
-# plugin lives in the browser half (exports "./client"), which:
-#
-#   1. registers a "全局面板" header row at the top of the sidebar's global
-#      panel icon list (slot `sidebar.panellist`, order -100) whose chevron
-#      folds/unfolds every other row of that list;
-#   2. hides the `dsh-dock` (功能坞) entry at the sidebar foot
-#      (slot `sidebar.footer.action`) — the dock panel itself is untouched and
-#      still opens from 设置 → 功能坞.
+# plugin lives in the browser half (exports "./client"), which registers a
+# "全局面板" header row at the top of the sidebar's global panel icon list
+# (slot `sidebar.panellist`, order -100) whose chevron folds/unfolds every other
+# row of that list.
 #
 # Nothing is patched into another package: uninstalling this bundle restores
 # the stock sidebar exactly.

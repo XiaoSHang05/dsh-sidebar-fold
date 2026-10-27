@@ -31,20 +31,20 @@ dsh plugin --profile desktop add "github:XiaoSHang05/dsh-sidebar-fold"
 
 装完**重启 DSH**。浏览器侧的代码在进程重启时才会重新读取。
 
-## 它还做了一件事
-
-隐藏侧栏底部的「功能坞」入口（`dsh-dock` 注册的那一行）。
-
-**功能坞本身没有任何改动** —— 插件没删、配置没动、面板照常打开。只是那一行按钮不再显示，好让侧栏底部干净一点。想打开功能坞时：**设置 → 侧栏整理 → 打开功能坞**。
-
-如果你没装 `dsh-dock`，这条规则什么也不会命中，不会有任何影响。
-
 ## 用法
 
 - **点整行**就开合，不用瞄准那个小箭头。
 - 状态记在浏览器的 `localStorage`（键 `dsh-sidebar-fold:collapsed`），刷新后保持。
 - 默认是**展开**的 —— 装上不会突然把你的图标藏起来。
-- 设置 → 侧栏整理 里也有同一个开关，以及那个「打开功能坞」按钮。
+- 设置 → 侧栏整理 里也有同一个开关。
+
+## 它不碰别的插件
+
+这一条是刻意设计的：插件只注册**自己的一行**，对其他任何侧栏条目只做视觉折叠，不改它们的注册、不改它们的顺序、不替换任何槽位。
+
+- 不依赖 `dsh-dock`、`dsh-context`、`dsh-mnemon` 或任何具体插件；
+- 没装某个插件时不会有任何影响 —— 那行不存在，就没有东西可折；
+- 你以后新装的插件，它的图标也会自动落进折叠范围。
 
 ## 为什么后来装的图标也会被折进去
 
@@ -72,7 +72,6 @@ html[data-sbf-fold="1"] nav:has([data-slot="sidebar.panellist"]) button:not(:has
 ## 边界
 
 - 折叠时被收起的图标**点不到**，要先展开。这是折叠本身的意思。
-- 「打开功能坞」是去 `.click()` 那个被隐藏的原按钮 —— 它的 `openPanel` 没有对外导出。如果哪天 `dsh-dock` 改了这个按钮的类名或 `aria-label`，这个按钮会失效，但隐藏本身不受影响。
 - 侧栏收起成 56px 轨道时折叠仍然生效，标题行只剩箭头。
 - 只在 **Web** 界面有效（`dsh.client.platform: "web"`）。
 
@@ -81,7 +80,7 @@ html[data-sbf-fold="1"] nav:has([data-slot="sidebar.panellist"]) button:not(:has
 插件全部逻辑在 `client.js` 一个文件里，没有构建步骤：
 
 ```
-client.js            全部逻辑：标题行、折叠状态、CSS、功能坞隐藏与打开
+client.js            全部逻辑：标题行、折叠状态、CSS
 index.js             宿主半部，空实现
 cordis.patch.yml     往 profile 里插一行 sidebar-fold
 package.json         包清单，含 dsh.bundle 与 dsh.client 声明

@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.0.1 — 2026-10-28
+
+**Removed**
+
+- The rule that hid the `dsh-dock` sidebar entry, and the "Open the dock"
+  button on the Settings page. Hiding another plugin's sidebar entry was a
+  personal preference that did not belong in a general-purpose plugin: anyone
+  who installed this one silently lost a control they might have wanted.
+
+  The plugin now touches nothing but its own header row. It declares no
+  dependency on `dsh-dock` and requires no module from it.
+
 ## 1.0.0 — 2026-10-26
 
 First public release.
@@ -12,13 +24,7 @@ First public release.
   host's own row styling, height and collapsed-rail behaviour.
 - The folded state is remembered per browser in `localStorage` and defaults to
   expanded.
-- A "Sidebar tidy-up" page under Settings with the same toggle, plus a button
-  that opens the dock.
-
-**Hides**
-
-- The `dsh-dock` entry at the sidebar foot. The dock itself is untouched and
-  still opens from its own panel or from the Settings page above.
+- A "Sidebar tidy-up" page under Settings with the same toggle.
 
 **Design notes**
 

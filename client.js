@@ -7,19 +7,15 @@ window.__ModuleLoader__.load({
     /**
      * dsh-sidebar-fold — 侧栏整理
      *
-     * 干两件事，都只做「加法」，不改任何别的包的代码：
+     * 只做一件事，且只做「加法」，不改任何别的包的代码：
      *
-     *  1. 在侧栏「全局面板」图标列表（槽位 `sidebar.panellist`）最前面插一行
-     *     「全局面板 ▾」，点它把其余图标折起来 / 展开（像「工作区」那样）。
-     *     折叠用纯 CSS + `<html data-sbf-fold>`，所以**别的插件后注册进来的
-     *     图标也会自动被折进去**，不需要逐个登记 id。
-     *
-     *  2. 把侧栏底部的「功能坞」入口（`dsh-dock` 注册到 `sidebar.footer.action`
-     *     的那一行）隐藏。功能坞**面板本体不动**，在 设置 → 侧栏整理 里留了
-     *     一个「打开功能坞」按钮，仍然能开。
+     * 在侧栏「全局面板」图标列表（槽位 `sidebar.panellist`）最前面插一行
+     * 「全局面板 ▾」，点它把其余图标折起来 / 展开（像「工作区」那样）。
+     * 折叠用纯 CSS + `<html data-sbf-fold>`，所以**别的插件后注册进来的
+     * 图标也会自动被折进去**，不需要逐个登记 id。
      *
      * 安全底线：这是整理层，不是功能层。任何异常都吞掉，最坏结果只是
-     * 「没折叠 / 没隐藏」，绝不会让侧栏渲染失败。卸载即完全复原。
+     * 「没折叠」，绝不会让侧栏渲染失败。卸载即完全复原。
      */
 
     const NS = 'sidebarFold'
@@ -82,33 +78,6 @@ window.__ModuleLoader__.load({
       return React.useSyncExternalStore(subscribe, () => collapsed, () => false)
     }
 
-    /**
-     * 打开功能坞面板。
-     *
-     * 它的 `openPanel` 是 dsh-dock 客户端模块内部的私有函数，没有对外导出
-     * （`exports` 只有 apply / inject / dockBridge）。但那一行按钮仍在 DOM 里，
-     * 只是被 CSS 隐藏 —— 直接 `.click()` 会走它自己的 React onClick，
-     * 效果与用户点它完全一致。这是最不侵入的做法：不碰它的源码、不改它的状态。
-     */
-    function openDock() {
-      try {
-        const selectors = [
-          '[data-slot="sidebar.footer.action"] .docke2-btn',
-          '[data-slot="sidebar.footer.action"] button[aria-label="功能坞"]',
-        ]
-        for (const selector of selectors) {
-          const node = document.querySelector(selector)
-          if (node && typeof node.click === 'function') {
-            node.click()
-            return true
-          }
-        }
-      } catch (e) {
-        /* ignore */
-      }
-      return false
-    }
-
     /* ────────────────────────────── 样式 ────────────────────────────── */
 
     const CSS = `
@@ -123,13 +92,6 @@ html[data-sbf-fold="1"] nav:has([data-slot="sidebar.panellist"]) button:not(:has
   transition: transform .15s ease; }
 html[data-sbf-fold="1"] .sbf-chevron { transform: rotate(-90deg); }
 @media (prefers-reduced-motion: reduce) { .sbf-chevron { transition: none; } }
-
-/* 隐藏 dsh-dock 注册到侧栏底部的「功能坞」入口。
-   功能坞面板本体不动，仍可从 设置 → 侧栏整理 打开。 */
-[data-slot="sidebar.footer.action"] .docke2-btn,
-[data-slot="sidebar.footer.action"] button[aria-label="功能坞"] {
-  display: none !important;
-}
 
 /* 设置页 */
 .sbf-page { display: flex; flex-direction: column; gap: 14px; padding: 20px 24px 32px;
@@ -214,7 +176,7 @@ html[data-sbf-fold="1"] .sbf-chevron { transform: rotate(-90deg); }
       )
     }
 
-    /** 设置页：折叠开关 + 功能坞入口。 */
+    /** 设置页：折叠开关。 */
     function FoldPage(props) {
       const isCollapsed = useCollapsed()
       const t = props && typeof props.t === 'function' ? props.t : undefined
@@ -244,22 +206,6 @@ html[data-sbf-fold="1"] .sbf-chevron { transform: rotate(-90deg); }
             ),
           ),
           h('span', { className: 'sbf-hint' }, L('page.tip', '提示：点侧栏里「全局面板」那一行就能开合，选择会记住。')),
-        ),
-
-        h(
-          'div',
-          { className: 'sbf-card' },
-          h('span', { className: 'sbf-card-title' }, L('page.dockTitle', '功能坞')),
-          h('span', { className: 'sbf-hint' }, L('page.dockNote', '侧栏底部的「功能坞」入口已隐藏。功能坞本身没动，用它自己的面板照常打开。')),
-          h(
-            'div',
-            { className: 'sbf-row' },
-            h(
-              'button',
-              { type: 'button', className: 'sbf-btn', onClick: () => openDock() },
-              L('page.openDock', '打开功能坞'),
-            ),
-          ),
         ),
       )
     }
@@ -325,9 +271,6 @@ html[data-sbf-fold="1"] .sbf-chevron { transform: rotate(-90deg); }
               'page.stateCollapsed': '当前：已收起',
               'page.stateExpanded': '当前：已展开',
               'page.tip': '提示：点侧栏里「全局面板」那一行就能开合，选择会记住。',
-              'page.dockTitle': '功能坞',
-              'page.dockNote': '侧栏底部的「功能坞」入口已隐藏。功能坞本身没动，用它自己的面板照常打开。',
-              'page.openDock': '打开功能坞',
             },
             en: {
               'header.label': 'Global panels',
@@ -340,9 +283,6 @@ html[data-sbf-fold="1"] .sbf-chevron { transform: rotate(-90deg); }
               'page.stateCollapsed': 'Now: collapsed',
               'page.stateExpanded': 'Now: expanded',
               'page.tip': 'Tip: click the “Global panels” row in the sidebar to toggle, and the choice is remembered.',
-              'page.dockTitle': 'Dock',
-              'page.dockNote': 'The dock entry at the sidebar foot is hidden. The dock itself is untouched and still opens from its own panel.',
-              'page.openDock': 'Open the dock',
             },
           })
         }
@@ -383,7 +323,7 @@ html[data-sbf-fold="1"] .sbf-chevron { transform: rotate(-90deg); }
         return ctx.slots.register({ name: 'main', key: HEADER_ID, locale: NS }, FoldPage)
       })
 
-      /* 设置页：折叠开关 + 功能坞入口 */
+      /* 设置页：折叠开关 */
       ctx.slots.inject('settings.section', () => {
         return ctx.slots.register(
           { name: 'settings.section', id: HEADER_ID, order: 91, label: settingsLabel, locale: NS },
